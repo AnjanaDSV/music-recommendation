@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodTunes — Music Recommendation App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">♪</span>
+                <span class="logo-text">MoodTunes</span>
+            </div>
+            <p class="tagline">Discover music that matches your vibe</p>
+        </header>
+
+        <main class="home-main">
+            <div class="card">
+                <h2 class="card-title">How are you feeling today?</h2>
+                <form action="/recommend" method="POST" class="recommend-form" id="recommendForm">
+                    <div class="form-group">
+                        <label for="mood">Your Mood</label>
+                        <div class="select-wrapper">
+                            <select name="mood" id="mood" required>
+                                <option value="" disabled selected>Select a mood...</option>
+                                {% for mood in moods %}
+                                <option value="{{ mood.lower() }}">{{ mood }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genre">Genre Preference</label>
+                        <div class="select-wrapper">
+                            <select name="genre" id="genre" required>
+                                <option value="" disabled selected>Select a genre...</option>
+                                {% for genre in genres %}
+                                <option value="{{ genre.lower() }}">{{ genre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span class="btn-label">Find My Music</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="mood-hints">
+                <div class="hint-item">🎵 8 curated tracks</div>
+                <div class="hint-item">🎨 Mood-matched picks</div>
+                <div class="hint-item">🎧 Powered by Last.fm</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('recommendForm').addEventListener('submit', function () {
+            const btn = document.getElementById('submitBtn');
+            btn.querySelector('.btn-label').textContent = 'Finding your music...';
+            btn.querySelector('.btn-icon').textContent = '⏳';
+            btn.disabled = true;
+        });
+    </script>
+</body>
+</html>
