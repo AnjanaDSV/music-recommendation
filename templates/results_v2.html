@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoodTunes — {{ mood }} {{ genre }} Picks</title>
+    <title>MoodTunes — {{ vibe_label }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,19 +12,33 @@
     <div class="container">
         <header>
             <div class="header-top">
-                <a href="/" class="btn-back">← Back</a>
+                <a href="/v2" class="btn-back">← New Search</a>
                 <div class="logo">
                     <span class="logo-icon">♪</span>
                     <span class="logo-text">MoodTunes</span>
                 </div>
                 <div class="header-spacer"></div>
             </div>
+
             <div class="version-toggle results-toggle">
-                <a href="/" class="v1-btn active">V1 Classic</a>
-                <a href="/v2" class="v2-btn">V2 AI ✨</a>
+                <a href="/" class="v1-btn">V1 Classic</a>
+                <a href="/v2" class="v2-btn active">V2 AI ✨</a>
             </div>
+
+            {% if ollama_down %}
+            <div class="ollama-warning">
+                ⚠️ AI engine not available — using keyword-based fallback.
+                Start Ollama with <code>ollama serve</code> or
+                <a href="/">switch to V1 Classic</a>.
+            </div>
+            {% endif %}
+
             <div class="results-header">
-                <h1>Your <span class="accent">{{ mood }}</span> {{ genre }} Playlist</h1>
+                <span class="ai-badge-result">🤖 AI-powered</span>
+                <h1>Your <span class="accent">{{ vibe_label }}</span> Playlist</h1>
+                {% if explanation %}
+                <p class="explanation"><em>{{ explanation }}</em></p>
+                {% endif %}
                 <p class="results-subtitle">{{ tracks|length }} tracks curated for your vibe</p>
             </div>
         </header>
@@ -63,8 +77,8 @@
             </div>
             {% else %}
             <div class="no-results">
-                <p>No tracks found for this combination. Try a different mood or genre.</p>
-                <a href="/" class="btn-primary">Try Again</a>
+                <p>No tracks found. Try rephrasing your mood description.</p>
+                <a href="/v2" class="btn-primary">Try Again</a>
             </div>
             {% endif %}
         </main>
