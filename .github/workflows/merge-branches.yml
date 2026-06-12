@@ -1,0 +1,32 @@
+name: Merge feature branches into main
+
+on:
+  workflow_dispatch:
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "AnjanaDSV"
+          git config user.email "$(git log -1 --format='%ae' origin/main)"
+
+      - name: Merge feature/version1 into main
+        run: |
+          git checkout main
+          git merge origin/feature/version1 --allow-unrelated-histories --no-edit -m "Merge feature/version1 into main"
+
+      - name: Merge feature/version2 into main
+        run: |
+          git merge origin/feature/version2 --allow-unrelated-histories --no-edit -m "Merge feature/version2 into main"
+
+      - name: Push changes
+        run: |
+          git push origin main
