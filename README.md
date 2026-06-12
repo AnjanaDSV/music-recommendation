@@ -122,4 +122,9 @@ If Ollama is not running, V2 gracefully falls back to keyword-based mood detecti
 
 ## Screenshots
 
-*Coming soon*
+Version 1:
+<img width="2003" height="1312" alt="image" src="https://github.com/user-attachments/assets/794230f6-50cf-4019-a7d1-4b15666525a4" />
+
+Version 2:
+<img width="2530" height="1184" alt="image" src="https://github.com/user-attachments/assets/3b5fbdf1-17c5-48bb-ad38-9297006fcf45" />
+
