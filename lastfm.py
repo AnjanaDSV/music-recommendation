@@ -84,6 +84,36 @@ def _enrich_track(raw_track):
     }
 
 
+def get_recommendations_v2(genre, mood_tag, search_tags=None, limit=8):
+    genre_tracks = _tag_tracks(genre)
+
+    # Use Ollama's search_tags if provided; fall back to MOOD_TAGS mapping
+    tags = search_tags if search_tags else MOOD_TAGS.get(mood_tag, [mood_tag])
+    mood_keys = set()
+    for tag in tags[:2]:
+        for t in _tag_tracks(tag, limit=50):
+            mood_keys.add((t["name"].lower(), t["artist"]["name"].lower()))
+
+    seen = set()
+    matched, unmatched = [], []
+    for track in genre_tracks:
+        key = (track["name"].lower(), track["artist"]["name"].lower())
+        if key in seen:
+            continue
+        seen.add(key)
+        if key in mood_keys:
+            matched.append(track)
+        else:
+            unmatched.append(track)
+
+    candidates = (matched + unmatched)[:limit]
+
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        enriched = list(ex.map(_enrich_track, candidates))
+
+    return enriched
+
+
 def get_recommendations(genre, mood, limit=8):
     genre_tracks = _tag_tracks(genre)
 

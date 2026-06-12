@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodTunes — V2 AI-Powered</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">♪</span>
+                <span class="logo-text">MoodTunes</span>
+            </div>
+            <p class="tagline">Describe your vibe — AI picks the music</p>
+        </header>
+
+        <main class="home-main">
+            <div class="version-toggle">
+                <a href="/" class="v1-btn">V1 Classic</a>
+                <a href="/v2" class="v2-btn active">V2 AI ✨</a>
+            </div>
+
+            <div class="card">
+                <div class="ai-header">
+                    <span class="ai-badge-inline">🤖 AI-Powered</span>
+                    <h2 class="card-title">What's your vibe right now?</h2>
+                </div>
+                <form action="/v2/recommend" method="POST" class="recommend-form" id="recommendForm">
+                    <div class="form-group">
+                        <label for="mood_text">Describe your mood, activity, or vibe</label>
+                        <textarea
+                            name="mood_text"
+                            id="mood_text"
+                            class="mood-textarea"
+                            rows="4"
+                            required
+                            placeholder="e.g. tired after a long day, cooking dinner, want something calm but not boring"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span class="btn-label">Find My Music</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="mood-hints">
+                <div class="hint-item">🤖 Llama3 local AI</div>
+                <div class="hint-item">🎧 Powered by Last.fm</div>
+                <div class="hint-item">🔒 Fully offline LLM</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('recommendForm').addEventListener('submit', function () {
+            const btn = document.getElementById('submitBtn');
+            btn.querySelector('.btn-label').textContent = 'AI is thinking...';
+            btn.querySelector('.btn-icon').textContent = '🤖';
+            btn.disabled = true;
+        });
+    </script>
+</body>
+</html>
